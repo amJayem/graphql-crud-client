@@ -1,3 +1,4 @@
+import { gql, useMutation } from '@apollo/client'
 import {
   Button,
   FormControl,
@@ -15,8 +16,25 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
+const UPDATE_PRODUCT = gql`
+  mutation updateProduct(
+    $input: UpdateProduct!
+    $updateProductInput2: UpdateProduct!
+  ) {
+    updateProduct(input: $updateProductInput2) {
+      name
+      price
+      id
+      description
+      image
+      onSale
+    }
+  }
+`
+
 const EditModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [updateProduct] = useMutation(UPDATE_PRODUCT)
 
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
