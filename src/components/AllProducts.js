@@ -70,7 +70,7 @@ const AllProducts = () => {
               <CardBody>
                 <Image
                   src={product.image}
-                  alt='Green double couch with wooden legs'
+                  alt={product.name}
                   borderRadius='lg'
                 />
                 <Stack mt='6' spacing='3'>
