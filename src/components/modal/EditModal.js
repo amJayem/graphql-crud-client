@@ -34,20 +34,7 @@ const GET_PRODUCT = gql`
 `
 
 const UPDATE_PRODUCT = gql`
-  mutation updateProduct(
-    $input: UpdateProduct!
-    $updateProductInput2: UpdateProduct!
-  ) {
-    updateProduct(input: $updateProductInput2) {
-      id
-      name
-      price
-    }
-  }
-`
-
-const U_P = gql`
-  mutation U_P($input: UpdateProduct!) {
+  mutation UPDATE_PRODUCT($input: UpdateProduct!) {
     updateProduct(input: $input) {
       id
       name
@@ -61,7 +48,7 @@ const EditModal = () => {
   const [updatedName, setName] = useState('')
   const [updatedPrice, setPrice] = useState('')
   const [updatedDescription, setDescription] = useState('')
-  const [updateProduct] = useMutation(U_P)
+  const [updateProduct] = useMutation(UPDATE_PRODUCT)
   const productId = 2
   const { data } = useProducts(productId)
   // const { name, price, description } = data?.product
