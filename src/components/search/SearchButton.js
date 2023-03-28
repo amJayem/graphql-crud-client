@@ -7,9 +7,9 @@ const SearchButton = () => {
   // const [search, setSearch] = useState('')
   // const [fetchData, { data, error }] = useLazyQuery()
   return (
-    <Center w='100%' h='60px' bg='green.300' color='white'>
+    <Center w='100%' h='60px' bg='teal.300' color='white'>
       <HStack>
-        <Center w='auto' h='40px' bg='green.300' color='white'>
+        <Center w='auto' h='40px' bg='teal.300' color='white'>
           <Input
             type={'text'}
             // onChange={(e) => setSearch(e.target.value)}
@@ -19,8 +19,8 @@ const SearchButton = () => {
         </Center>
         <Button
           // onClick={fetchData}
-          bg='green.300'
-          type='green'>
+          bg='teal.300'
+          type='submit'>
           <SearchIcon />
         </Button>
       </HStack>

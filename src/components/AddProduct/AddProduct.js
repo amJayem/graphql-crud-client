@@ -41,7 +41,7 @@ const AddProduct = ({ refetch }) => {
   return (
     <>
       <Button
-        margin={'10px'}
+        margin={'15px'}
         variant='solid'
         colorScheme='blue'
         onClick={onOpen}>
