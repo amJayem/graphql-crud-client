@@ -27,6 +27,7 @@ const QUERY_ALL_PRODUCTS = gql`
       price
       id
       description
+      image
     }
   }
 `
@@ -34,7 +35,8 @@ const QUERY_ALL_PRODUCTS = gql`
 const AllProducts = () => {
   const { data, loading, refetch } = useQuery(QUERY_ALL_PRODUCTS)
   // console.log(data)
-  const products = data?.products
+  // const products = data?.products
+  // console.log(products?.image)
 
   if (loading) {
     return (
@@ -60,16 +62,16 @@ const AllProducts = () => {
   // }
 
   return (
-    <div>
+    <Box bg='teal.400'>
       <SearchButton />
       <AddProduct refetch={refetch} />
-      {products?.map((product) => (
+      {data?.products?.map((product) => (
         <Flex justify={'center'} flexDirection='row' key={product.id}>
-          <Box margin='5' boxShadow='lg' bg='white'>
-            <Card maxW='md'>
+          <Box margin='5' boxShadow='lg'>
+            <Card maxW='md' bg='blue.100'>
               <CardBody>
                 <Image
-                  src={product.image}
+                  src={product?.image}
                   alt={product.name}
                   borderRadius='lg'
                 />
@@ -94,7 +96,7 @@ const AllProducts = () => {
           </Box>
         </Flex>
       ))}
-    </div>
+    </Box>
   )
 }
 
