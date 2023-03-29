@@ -1,6 +1,11 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Button,
   ButtonGroup,
@@ -20,20 +25,27 @@ import EditModal from './modal/EditModal'
 import SearchButton from './search/SearchButton'
 import AddProduct from './AddProduct/AddProduct'
 
-const QUERY_ALL_PRODUCTS = gql`
-  query AllProducts {
-    products {
-      name
-      price
-      id
+const getAllProducts = gql`
+  query GetAllProducts($amount: Int) {
+    getAllProducts(amount: $amount) {
+      categoryId
       description
+      id
       image
+      name
+      onSale
+      price
+      quantity
+      reviews {
+        comment
+        title
+      }
     }
   }
 `
 
 const AllProducts = () => {
-  const { data, loading, refetch } = useQuery(QUERY_ALL_PRODUCTS)
+  const { data, loading, refetch } = useQuery(getAllProducts)
   // console.log(data)
   // const products = data?.products
   // console.log(products?.image)
@@ -65,7 +77,7 @@ const AllProducts = () => {
     <Box bg='teal.400'>
       <SearchButton />
       <AddProduct refetch={refetch} />
-      {data?.products?.map((product) => (
+      {data?.getAllProducts?.map((product) => (
         <Flex justify={'center'} flexDirection='row' key={product.id}>
           <Box margin='5' boxShadow='lg'>
             <Card maxW='md' bg='blue.100'>
@@ -92,6 +104,25 @@ const AllProducts = () => {
                   </Button>
                 </ButtonGroup>
               </CardFooter>
+              <Divider />
+              <br />
+              {/* <Accordion /> */}
+              {product.reviews.map((review) => (
+                <Accordion allowToggle>
+                  <AccordionItem>
+                    <h2>
+                      <AccordionButton
+                        _expanded={{ bg: 'tomato', color: 'white' }}>
+                        <Box as='span' flex='1' textAlign='left'>
+                          {review.title}
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel>{review.comment}</AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              ))}
             </Card>
           </Box>
         </Flex>
