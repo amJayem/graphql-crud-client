@@ -22,6 +22,11 @@ const ADD_PRODUCT = gql`
       name
       price
       onSale
+      categoryId
+      id
+      description
+      image
+      quantity
     }
   }
 `
@@ -29,8 +34,14 @@ const ADD_PRODUCT = gql`
 const AddProduct = ({ refetch }) => {
   const [name, setProductName] = useState('')
   const [price, setProductPrice] = useState(0)
-  // const [description, setProductDescription] = useState('')
+  const [onSale, setOnSale] = useState(true)
+  const [categoryId, setCategoryId] = useState(1)
+  const [description, setProductDescription] = useState('')
+  const [image, setImage] = useState('')
+  const [quantity, setQuantity] = useState(1)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
+  // console.log(isOpen, onOpen, onclose)
 
   const [addProduct] = useMutation(ADD_PRODUCT)
 
@@ -78,11 +89,47 @@ const AddProduct = ({ refetch }) => {
             </FormControl>
 
             <FormControl mt={4}>
+              <FormLabel>Product Category Id</FormLabel>
+              <Input
+                type={'number'}
+                placeholder={`CategoryID (1-3) : ${categoryId}`}
+                onChange={(e) => setCategoryId(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Product Quantity</FormLabel>
+              <Input
+                type={'number'}
+                placeholder={`Quantity : ${quantity}`}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>On-sale Status</FormLabel>
+              <Input
+                type={'text'}
+                placeholder={`Product onSale : ${onSale}`}
+                onChange={(e) => setOnSale(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Image Link</FormLabel>
+              <Input
+                type={'text'}
+                placeholder='Product image'
+                onChange={(e) => setImage(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
               <FormLabel>Description</FormLabel>
               <Textarea
                 type={'text'}
                 placeholder='Product description'
-                // onChange={(e) => setProductDescription(e.target.value)}
+                onChange={(e) => setProductDescription(e.target.value)}
               />
             </FormControl>
           </ModalBody>
@@ -97,7 +144,11 @@ const AddProduct = ({ refetch }) => {
                     input: {
                       name: name,
                       price: Number(price),
-                      onSale: true
+                      onSale: Boolean(onSale),
+                      categoryId: Number(categoryId),
+                      description: description,
+                      image: image,
+                      quantity: Number(quantity)
                     }
                   }
                 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import {
   Accordion,
   AccordionButton,
@@ -44,8 +44,15 @@ const getAllProducts = gql`
   }
 `
 
+const DELETE_PRODUCT = gql`
+  mutation DeleteProduct($deleteProductId: ID!) {
+    deleteProduct(id: $deleteProductId)
+  }
+`
+
 const AllProducts = () => {
-  const { data, loading, refetch } = useQuery(getAllProducts)
+  const { data, loading, refetch, error } = useQuery(getAllProducts)
+  const [deleteProduct] = useMutation(DELETE_PRODUCT)
   // console.log(data)
   // const products = data?.products
   // console.log(products?.image)
@@ -69,16 +76,23 @@ const AllProducts = () => {
     )
   }
 
-  // if (error) {
-  //   return <Heading size='md'>Error occurred!!</Heading>
-  // }
+  refetch()
+
+  if (error) {
+    console.error(error)
+    return (
+      <Heading size='md'>
+        Error occurred!! Something is not working properly
+      </Heading>
+    )
+  }
 
   return (
     <Box bg='teal.400'>
       <SearchButton />
       <AddProduct refetch={refetch} />
       {data?.getAllProducts?.map((product) => (
-        <Flex justify={'center'} flexDirection='row' key={product.id}>
+        <Flex justify={'center'} key={product.id}>
           <Box margin='5' boxShadow='lg'>
             <Card maxW='md' bg='blue.100'>
               <CardBody>
@@ -89,6 +103,7 @@ const AllProducts = () => {
                 />
                 <Stack mt='6' spacing='3'>
                   <Heading size='md'>{product.name}</Heading>
+                  <Text>{product.id}</Text>
                   <Text>{product.description}</Text>
                   <Text color='blue.600' fontSize='2xl'>
                     $ {product.price}
@@ -99,16 +114,26 @@ const AllProducts = () => {
               <CardFooter>
                 <ButtonGroup spacing='2'>
                   <EditModal />
-                  <Button variant='outline' colorScheme='red'>
+                  <Button
+                    variant='outline'
+                    colorScheme='red'
+                    onClick={() =>
+                      deleteProduct({
+                        variables: {
+                          deleteProductId: product.id
+                        }
+                      })
+                    }>
                     Delete
                   </Button>
                 </ButtonGroup>
               </CardFooter>
               <Divider />
-              <br />
-              {/* <Accordion /> */}
-              {product.reviews.map((review) => (
-                <Accordion allowToggle>
+              <Text padding={'5'} fontSize={'xl'} as='b'>
+                Comments
+              </Text>
+              {product.reviews.map((review, i) => (
+                <Accordion allowToggle key={i}>
                   <AccordionItem>
                     <h2>
                       <AccordionButton

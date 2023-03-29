@@ -16,40 +16,37 @@ import {
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
-import { useQuery } from '@apollo/client'
+import { useProducts } from './useProducts'
 
-const GET_PRODUCT = gql`
-  query Product($productId: ID!) {
-    product(id: $productId) {
-      categoryId
-      description
-      id
-      image
-      name
-      onSale
-      price
-      quantity
-    }
-  }
-`
+// const GET_PRODUCT = gql`
+//   query Product($productId: ID!) {
+//     product(id: $productId) {
+//       categoryId
+//       description
+//       id
+//       image
+//       name
+//       onSale
+//       price
+//       quantity
+//     }
+//   }
+// `
 
 const UPDATE_PRODUCT = gql`
-  mutation UPDATE_PRODUCT($input: UpdateProduct!) {
-    updateProduct(input: $input) {
-      id
-      name
-      price
-    }
+  mutation UpdateProduct($iD: ID!, $input: UpdateProductInput!) {
+    updateProduct(id: $iD, input: $input)
   }
 `
 
 const EditModal = () => {
+  // console.log(id)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [updatedName, setName] = useState('')
   const [updatedPrice, setPrice] = useState('')
   const [updatedDescription, setDescription] = useState('')
   const [updateProduct] = useMutation(UPDATE_PRODUCT)
-  const productId = 2
+  const productId = '6423c8cc8c1d071460998d28'
   const { data } = useProducts(productId)
   // const { name, price, description } = data?.product
   // console.log(name, price, description)
@@ -116,9 +113,9 @@ const EditModal = () => {
                   variables: {
                     input: {
                       id: productId,
-                      newProductName: updatedName,
-                      newProductPrice: Number(updatedPrice)
-                      // description: updatedDescription
+                      name: updatedName,
+                      price: Number(updatedPrice),
+                      description: updatedDescription
                     }
                   }
                 })
@@ -134,12 +131,3 @@ const EditModal = () => {
 }
 
 export default EditModal
-
-const useProducts = (productId) => {
-  const { data, error, loading } = useQuery(GET_PRODUCT, {
-    variables: {
-      productId
-    }
-  })
-  return { data, error, loading }
-}
