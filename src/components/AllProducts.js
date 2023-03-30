@@ -53,9 +53,6 @@ const DELETE_PRODUCT = gql`
 const AllProducts = () => {
   const { data, loading, refetch, error } = useQuery(getAllProducts)
   const [deleteProduct] = useMutation(DELETE_PRODUCT)
-  // console.log(data)
-  // const products = data?.products
-  // console.log(products?.image)
 
   if (loading) {
     return (
@@ -88,12 +85,12 @@ const AllProducts = () => {
   }
 
   return (
-    <Box bg='teal.400'>
+    <Box bg='gray.200'>
       <SearchButton />
       <AddProduct refetch={refetch} />
-      {data?.getAllProducts?.map((product) => (
-        <Flex justify={'center'} key={product.id}>
-          <Box margin='5' boxShadow='lg'>
+      <Flex justify={'center'} wrap={'wrap'}>
+        {data?.getAllProducts?.map((product) => (
+          <Box key={product.id} margin='5' boxShadow='lg'>
             <Card maxW='md' bg='blue.100'>
               <CardBody>
                 <Image
@@ -150,8 +147,8 @@ const AllProducts = () => {
               ))}
             </Card>
           </Box>
-        </Flex>
-      ))}
+        ))}
+      </Flex>
     </Box>
   )
 }

@@ -17,7 +17,7 @@ import {
 import React, { useState } from 'react'
 
 const ADD_PRODUCT = gql`
-  mutation addProduct($input: AddProduct!) {
+  mutation addProduct($input: ProductInput!) {
     addProduct(input: $input) {
       name
       price
